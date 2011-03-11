@@ -23,7 +23,9 @@ public class Product {
 	}
 	
 	public String toString() {
-		return "Product #" + id;
+		return "Product #" + id + " (r"+srs.getRequirements().size()+
+			", cons"+(srs.isConsistent() ? 1 : 0) +
+			", a"+architecture.size()+")";
 	}
 	
 	public boolean isVerified() {

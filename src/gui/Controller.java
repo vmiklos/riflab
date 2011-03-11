@@ -61,11 +61,11 @@ public class Controller {
 			new Gui("ReqChecking", new ReqChecking(), asList(reqAnalysisCheckingQueue), asList(reqCheckingDesignQueue));
 		else
 			new Gui("ReqChecking", new ReqChecking(), asList(reqAnalysisCheckingQueue), asList(reqCheckingRefineQueue));
-		new Gui("ReqRefine", new ReqChecking(), asList(reqCheckingRefineQueue), asList(reqRefineDesignQueue));
+		new Gui("ReqRefine", new ReqRefine(), asList(reqCheckingRefineQueue), asList(reqRefineDesignQueue));
 		if (yesno)
-			new Gui("Design", new ReqChecking(), asList(reqCheckingDesignQueue), asList(designDevelopQueue, designTestQueue, designDocQueue));
+			new Gui("Design", new Design(), asList(reqCheckingDesignQueue), asList(designDevelopQueue, designTestQueue, designDocQueue));
 		else
-			new Gui("Design", new ReqChecking(), asList(reqRefineDesignQueue), asList(designDevelopQueue, designTestQueue, designDocQueue));
+			new Gui("Design", new Design(), asList(reqRefineDesignQueue), asList(designDevelopQueue, designTestQueue, designDocQueue));
 		new Gui("Develop", new Develop(), asList(designDevelopQueue), asList(developIntegrateQueue));
 		new Gui("Test", new Test(), asList(designTestQueue), asList(testIntegrateQueue));
 		new Gui("Doc", new Doc(), asList(designDocQueue), asList(docIntegrateQueue));
