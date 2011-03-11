@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -53,14 +54,19 @@ public class Gui extends JFrame implements ActionListener {
 
 		@Override
 		protected Void doInBackground() throws Exception {
-			Product in = null, res;
-			if (inQueues.size() > 0) // FIXME
-				in = inQueues.get(0).poll(60L, TimeUnit.SECONDS);
+			List<Product> ins = new LinkedList<Product>();
+			Product res;
+			for(BlockingQueue<Product> q : inQueues) {
+				ins.add(q.poll(60L, TimeUnit.SECONDS));
+			}
 			String statstr = "running";
-			if (in != null)
-				statstr += " '"+in+"'";
+			if (ins.size() > 0) {
+				for (Product p : ins) {
+					statstr += " '"+p+"'";
+				}
+			}
 			status.setText(statstr);
-			res = doable.doIt(in);
+			res = doable.doIt(ins);
 			Thread.sleep(1000);
 			for (BlockingQueue<Product> q : outQueues) {
 				q.add(res);

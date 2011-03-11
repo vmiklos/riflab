@@ -8,11 +8,11 @@ import entities.Product;
 public class ReqAnalysis implements Doable {
 	static Integer id = 0;
 
-	public Product doIt(Product product) {
+	public Product doIt(List<Product> products) {
 		List<String> requirements = new LinkedList<String>();
 		requirements.add("elso kovetelmeny");
 		requirements.add("masodik kovetelmeny");
-		product = new Product(id++);
+		Product product = new Product(id++);
 		product.getSrs().setRequirements(requirements);
 		return product;
 	}
