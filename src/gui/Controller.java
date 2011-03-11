@@ -19,6 +19,9 @@ public class Controller {
 	private BlockingQueue<Product> designDevelopQueue;
 	private BlockingQueue<Product> designTestQueue;
 	private BlockingQueue<Product> designDocQueue;
+	private BlockingQueue<Product> developIntegrateQueue;
+	private BlockingQueue<Product> testIntegrateQueue;
+	private BlockingQueue<Product> docIntegrateQueue;
 
 	public List<BlockingQueue<Product>> asList(BlockingQueue<Product> q) {
 		List<BlockingQueue<Product>> l = new LinkedList<BlockingQueue<Product>>();
@@ -43,6 +46,9 @@ public class Controller {
 		designDevelopQueue = new LinkedBlockingQueue<Product>();
 		designTestQueue = new LinkedBlockingQueue<Product>();
 		designDocQueue = new LinkedBlockingQueue<Product>();
+		developIntegrateQueue = new LinkedBlockingQueue<Product>();
+		testIntegrateQueue = new LinkedBlockingQueue<Product>();
+		docIntegrateQueue = new LinkedBlockingQueue<Product>();
 
 		boolean yesno = ask();
 		
@@ -56,9 +62,10 @@ public class Controller {
 			new Gui("Design", new ReqChecking(), asList(reqCheckingDesignQueue), asList(designDevelopQueue, designTestQueue, designDocQueue));
 		else
 			new Gui("Design", new ReqChecking(), asList(reqRefineDesignQueue), asList(designDevelopQueue, designTestQueue, designDocQueue));
-		new Gui("Develop", new Develop(), asList(designDevelopQueue), new LinkedList<BlockingQueue<Product>>());
-		new Gui("Test", new Test(), asList(designTestQueue), new LinkedList<BlockingQueue<Product>>());
-		new Gui("Doc", new Doc(), asList(designDocQueue), new LinkedList<BlockingQueue<Product>>());
+		new Gui("Develop", new Develop(), asList(designDevelopQueue), asList(developIntegrateQueue));
+		new Gui("Test", new Test(), asList(designTestQueue), asList(testIntegrateQueue));
+		new Gui("Doc", new Doc(), asList(designDocQueue), asList(docIntegrateQueue));
+		new Gui("Integration", new Integration(), asList(developIntegrateQueue, testIntegrateQueue, docIntegrateQueue), new LinkedList<BlockingQueue<Product>>());
 	}
 
 	private boolean ask() {
