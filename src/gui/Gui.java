@@ -28,6 +28,7 @@ public class Gui extends JFrame implements ActionListener {
 	private Doable doable;
 	private List<BlockingQueue<Product>> inQueues;
 	private List<BlockingQueue<Product>> outQueues;
+	private String dtoStatus = "";
 	
 	public Gui(String name, Doable doable, List<BlockingQueue<Product>> inQueues, List<BlockingQueue<Product>> outQueues) {
 		super(name);
@@ -59,14 +60,13 @@ public class Gui extends JFrame implements ActionListener {
 			for(BlockingQueue<Product> q : inQueues) {
 				ins.add(q.poll(60L, TimeUnit.SECONDS));
 			}
-			String statstr = "<html>running";
+			dtoStatus = "running input";
 			if (ins.size() > 0) {
 				for (Product p : ins) {
-					statstr += "<br>'"+p+"'";
+					dtoStatus += "<br>'"+p+"'";
 				}
 			}
-			statstr += "</html>";
-			status.setText(statstr);
+			status.setText("<html>" + dtoStatus + "</html>");
 			res = doable.doIt(ins);
 			Thread.sleep(1000);
 			for (BlockingQueue<Product> q : outQueues) {
@@ -78,7 +78,7 @@ public class Gui extends JFrame implements ActionListener {
 		
 		@Override
 		protected void process(List<Void> chunks) {
-			status.setText(WAIT_FOR_NEXT);
+			status.setText("<html>" + dtoStatus + "<br>" + WAIT_FOR_NEXT + "</html>");
 		}
 	}
 	
