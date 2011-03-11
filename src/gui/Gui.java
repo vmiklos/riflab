@@ -46,7 +46,7 @@ public class Gui extends JFrame implements ActionListener {
 		add(status);
 		add(next);
 		pack();
-		setLocation(0, 100*poscounter++);
+		setLocation(300*((int)(poscounter/4)), 100*(poscounter++ % 4));
 		setVisible(true);
 	}
 	
