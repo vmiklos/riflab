@@ -39,7 +39,7 @@ public class Gui extends JFrame implements ActionListener {
 		next = new JButton("next");
 		next.addActionListener(this);
 		next.setActionCommand("next");
-		setMinimumSize(new Dimension(300, 150));
+		setMinimumSize(new Dimension(350, 150));
 		status = new JLabel(WAIT_FOR_NEXT);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

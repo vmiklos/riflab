@@ -25,7 +25,12 @@ public class Product {
 	public String toString() {
 		return "Product #" + id + " (r"+srs.getRequirements().size()+
 			", cons"+(srs.isConsistent() ? 1 : 0) +
-			", a"+architecture.size()+")";
+			", a"+architecture.size()+
+			", code" + sourceFiles.size() +
+			", t" + testSuite.size() +
+			", d" + documentation.size() +
+			", ve" + (isVerified() ? 1: 0) +
+			", va" + (isValid() ? 1:0) + ")";
 	}
 	
 	public boolean isVerified() {
