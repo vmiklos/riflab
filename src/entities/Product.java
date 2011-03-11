@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Product {
+	private int id;
 	private boolean verified;
 	private boolean valid;
 	private List<File> sourceFiles;
@@ -12,13 +13,19 @@ public class Product {
 	private List<String> architecture;
 	private SRS srs;
 	
-	public Product() {
+	public Product(int id) {
 		sourceFiles = new LinkedList<File>();
 		testSuite = new LinkedList<File>();
 		documentation = new LinkedList<File>();
 		architecture = new LinkedList<String>();
 		srs = new SRS();
+		this.id = id;
 	}
+	
+	public String toString() {
+		return "Product #" + id;
+	}
+	
 	public boolean isVerified() {
 		return verified;
 	}

@@ -56,7 +56,10 @@ public class Gui extends JFrame implements ActionListener {
 			Product in = null, res;
 			if (inQueues.size() > 0) // FIXME
 				in = inQueues.get(0).poll(60L, TimeUnit.SECONDS);
-			status.setText("running");
+			String statstr = "running";
+			if (in != null)
+				statstr += " '"+in+"'";
+			status.setText(statstr);
 			res = doable.doIt(in);
 			Thread.sleep(1000);
 			for (BlockingQueue<Product> q : outQueues) {
