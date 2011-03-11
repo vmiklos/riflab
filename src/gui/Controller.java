@@ -4,14 +4,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
-import logic.ReqAnalysis;
-import logic.ReqChecking;
-
+import logic.*;
 import entities.Product;
 
 public class Controller {
@@ -20,10 +16,21 @@ public class Controller {
 	private BlockingQueue<Product> reqCheckingDesignQueue;
 	private BlockingQueue<Product> reqCheckingRefineQueue;
 	private BlockingQueue<Product> reqRefineDesignQueue;
+	private BlockingQueue<Product> designDevelopQueue;
+	private BlockingQueue<Product> designTestQueue;
+	private BlockingQueue<Product> designDocQueue;
 
 	public List<BlockingQueue<Product>> asList(BlockingQueue<Product> q) {
 		List<BlockingQueue<Product>> l = new LinkedList<BlockingQueue<Product>>();
 		l.add(q);
+		return l;
+	}
+
+	public List<BlockingQueue<Product>> asList(BlockingQueue<Product> q1, BlockingQueue<Product> q2, BlockingQueue<Product> q3) {
+		List<BlockingQueue<Product>> l = new LinkedList<BlockingQueue<Product>>();
+		l.add(q1);
+		l.add(q2);
+		l.add(q3);
 		return l;
 	}
 
@@ -33,6 +40,9 @@ public class Controller {
 		reqCheckingDesignQueue = new LinkedBlockingQueue<Product>();
 		reqCheckingRefineQueue = new LinkedBlockingQueue<Product>();
 		reqRefineDesignQueue = new LinkedBlockingQueue<Product>();
+		designDevelopQueue = new LinkedBlockingQueue<Product>();
+		designTestQueue = new LinkedBlockingQueue<Product>();
+		designDocQueue = new LinkedBlockingQueue<Product>();
 
 		boolean yesno = ask();
 		
@@ -43,9 +53,12 @@ public class Controller {
 			new Gui("ReqChecking", new ReqChecking(), asList(reqAnalysisCheckingQueue), asList(reqCheckingRefineQueue));
 		new Gui("ReqRefine", new ReqChecking(), asList(reqCheckingRefineQueue), asList(reqRefineDesignQueue));
 		if (yesno)
-			new Gui("Design", new ReqChecking(), asList(reqCheckingDesignQueue), new LinkedList<BlockingQueue<Product>>());
+			new Gui("Design", new ReqChecking(), asList(reqCheckingDesignQueue), asList(designDevelopQueue, designTestQueue, designDocQueue));
 		else
-			new Gui("Design", new ReqChecking(), asList(reqRefineDesignQueue), new LinkedList<BlockingQueue<Product>>());
+			new Gui("Design", new ReqChecking(), asList(reqRefineDesignQueue), asList(designDevelopQueue, designTestQueue, designDocQueue));
+		new Gui("Develop", new Develop(), asList(designDevelopQueue), new LinkedList<BlockingQueue<Product>>());
+		new Gui("Test", new Test(), asList(designTestQueue), new LinkedList<BlockingQueue<Product>>());
+		new Gui("Doc", new Doc(), asList(designDocQueue), new LinkedList<BlockingQueue<Product>>());
 	}
 
 	private boolean ask() {
