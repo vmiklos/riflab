@@ -38,7 +38,7 @@ public class Gui extends JFrame implements ActionListener {
 		next = new JButton("next");
 		next.addActionListener(this);
 		next.setActionCommand("next");
-		setMinimumSize(new Dimension(200, 75));
+		setMinimumSize(new Dimension(300, 150));
 		status = new JLabel(WAIT_FOR_NEXT);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -46,7 +46,7 @@ public class Gui extends JFrame implements ActionListener {
 		add(status);
 		add(next);
 		pack();
-		setLocation(300*((int)(poscounter/4)), 100*(poscounter++ % 4));
+		setLocation(400*((int)(poscounter/4)), 200*(poscounter++ % 4));
 		setVisible(true);
 	}
 	
@@ -59,12 +59,13 @@ public class Gui extends JFrame implements ActionListener {
 			for(BlockingQueue<Product> q : inQueues) {
 				ins.add(q.poll(60L, TimeUnit.SECONDS));
 			}
-			String statstr = "running";
+			String statstr = "<html>running";
 			if (ins.size() > 0) {
 				for (Product p : ins) {
-					statstr += " '"+p+"'";
+					statstr += "<br>'"+p+"'";
 				}
 			}
+			statstr += "</html>";
 			status.setText(statstr);
 			res = doable.doIt(ins);
 			Thread.sleep(1000);
