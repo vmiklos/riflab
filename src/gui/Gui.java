@@ -19,6 +19,7 @@ import logic.Doable;
 
 public class Gui extends JFrame implements ActionListener {
 
+	private static final String WAIT_FOR_NEXT = "waiting for next button";
 	private static final long serialVersionUID = 1L;
 	private JButton next;
 	private JLabel status;
@@ -37,7 +38,7 @@ public class Gui extends JFrame implements ActionListener {
 		next.addActionListener(this);
 		next.setActionCommand("next");
 		setMinimumSize(new Dimension(200, 75));
-		status = new JLabel("waiting");
+		status = new JLabel(WAIT_FOR_NEXT);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new FlowLayout());
@@ -55,25 +56,26 @@ public class Gui extends JFrame implements ActionListener {
 			Product in = null, res;
 			if (inQueues.size() > 0) // FIXME
 				in = inQueues.get(0).poll(60L, TimeUnit.SECONDS);
+			status.setText("running");
 			res = doable.doIt(in);
+			Thread.sleep(1000);
 			for (BlockingQueue<Product> q : outQueues) {
 				q.add(res);
 			}
-			Thread.sleep(1000);
 			publish();
 			return null;
 		}
 		
 		@Override
 		protected void process(List<Void> chunks) {
-			status.setText("waiting");
+			status.setText(WAIT_FOR_NEXT);
 		}
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if ("next".equals(e.getActionCommand())) {
-			status.setText("running");
+			status.setText("waiting for input");
 			new Task().execute();
 		}
 	}
