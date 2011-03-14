@@ -54,11 +54,23 @@ public class Gui extends JFrame implements ActionListener {
 	private class Task extends SwingWorker<Void, Void> {
 
 		@Override
-		protected Void doInBackground() throws Exception {
+		protected Void doInBackground() {
 			List<Product> ins = new LinkedList<Product>();
 			Product res;
 			for(BlockingQueue<Product> q : inQueues) {
-				ins.add(q.poll(60L, TimeUnit.SECONDS));
+				try {
+					Product p = q.poll(60L, TimeUnit.SECONDS);
+					if (p == null) {
+						dtoStatus = "Read timeout!<br>" + WAIT_FOR_NEXT;
+						publish();
+						return null;
+					}
+					ins.add(p);
+				} catch (InterruptedException e) {
+					dtoStatus = "Read interrupted!<br>" + WAIT_FOR_NEXT;
+					publish();
+					return null;
+				}
 			}
 			dtoStatus = "running input";
 			if (ins.size() > 0) {
@@ -66,19 +78,26 @@ public class Gui extends JFrame implements ActionListener {
 					dtoStatus += "<br>'"+p+"'";
 				}
 			}
-			status.setText("<html>" + dtoStatus + "</html>");
+			publish();
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				dtoStatus = "Running interrupted!<br>" + WAIT_FOR_NEXT;
+				publish();
+				return null;
+			}
 			res = doable.doIt(ins);
-			Thread.sleep(1000);
 			for (BlockingQueue<Product> q : outQueues) {
 				q.add(res);
 			}
+			dtoStatus = dtoStatus + "<br>" + WAIT_FOR_NEXT;
 			publish();
 			return null;
 		}
 		
 		@Override
 		protected void process(List<Void> chunks) {
-			status.setText("<html>" + dtoStatus + "<br>" + WAIT_FOR_NEXT + "</html>");
+			status.setText("<html>" + dtoStatus + "</html>");
 		}
 	}
 	
