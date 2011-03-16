@@ -4,31 +4,26 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.TimeUnit;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.SwingWorker;
-
 import entities.Product;
 
 import logic.Doable;
 
 public class Gui extends JFrame implements ActionListener {
 
-	private static final String WAIT_FOR_NEXT = "waiting for next button";
+	public static final String WAIT_FOR_NEXT = "waiting for next button";
 	private static final long serialVersionUID = 1L;
 	private JButton next;
 	private JLabel status;
-	private static int poscounter = 0;
+	public static int poscounter = 0;
 	private Doable doable;
 	private List<BlockingQueue<Product>> inQueues;
 	private List<BlockingQueue<Product>> outQueues;
-	private String dtoStatus = "";
+	int tasktype = 0;
 	
 	public Gui(String name, Doable doable, List<BlockingQueue<Product>> inQueues, List<BlockingQueue<Product>> outQueues) {
 		super(name);
@@ -51,61 +46,20 @@ public class Gui extends JFrame implements ActionListener {
 		setVisible(true);
 	}
 	
-	private class Task extends SwingWorker<Void, Void> {
-
-		@Override
-		protected Void doInBackground() {
-			List<Product> ins = new LinkedList<Product>();
-			Product res;
-			for(BlockingQueue<Product> q : inQueues) {
-				try {
-					Product p = q.poll(60L, TimeUnit.SECONDS);
-					if (p == null) {
-						dtoStatus = "Read timeout!<br>" + WAIT_FOR_NEXT;
-						publish();
-						return null;
-					}
-					ins.add(p);
-				} catch (InterruptedException e) {
-					dtoStatus = "Read interrupted!<br>" + WAIT_FOR_NEXT;
-					publish();
-					return null;
-				}
-			}
-			dtoStatus = "running input";
-			if (ins.size() > 0) {
-				for (Product p : ins) {
-					dtoStatus += "<br>'"+p+"'";
-				}
-			}
-			publish();
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				dtoStatus = "Running interrupted!<br>" + WAIT_FOR_NEXT;
-				publish();
-				return null;
-			}
-			res = doable.doIt(ins);
-			for (BlockingQueue<Product> q : outQueues) {
-				q.add(res);
-			}
-			dtoStatus = dtoStatus + "<br>" + WAIT_FOR_NEXT;
-			publish();
-			return null;
-		}
-		
-		@Override
-		protected void process(List<Void> chunks) {
-			status.setText("<html>" + dtoStatus + "</html>");
-		}
+	Gui(String name, Doable doable, List<BlockingQueue<Product>> inQueues, List<BlockingQueue<Product>> outQueues, int tasktype) {
+		this(name, doable, inQueues, outQueues);
+		this.tasktype = tasktype;
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if ("next".equals(e.getActionCommand())) {
 			status.setText("waiting for input");
-			new Task().execute();
+			if (tasktype == 1) {
+				new Task_isConsistent(doable, inQueues, outQueues, status).execute();
+			}
+			else
+				new Task(doable, inQueues, outQueues, status).execute();
 		}
 	}
 }
