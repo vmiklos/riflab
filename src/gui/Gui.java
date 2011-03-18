@@ -1,15 +1,14 @@
 package gui;
 
+import com.ibm.mq.*;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import entities.Product;
 
 import logic.Doable;
 
@@ -19,17 +18,18 @@ public class Gui extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private JButton next;
 	private JLabel status;
-	public static int poscounter = 0;
 	private Doable doable;
-	private List<BlockingQueue<Product>> inQueues;
-	private List<BlockingQueue<Product>> outQueues;
+	private List<MQQueue> inQueues;
+	private List<MQQueue> outQueues;
 	int tasktype = 0;
+	MQQueueManager qMgr;
 	
-	public Gui(String name, Doable doable, List<BlockingQueue<Product>> inQueues, List<BlockingQueue<Product>> outQueues) {
+	public Gui(String name, Doable doable, List<MQQueue> inQueues, List<MQQueue> outQueues, int poscounter, MQQueueManager qMgr) {
 		super(name);
 		this.doable = doable;
 		this.inQueues = inQueues;
 		this.outQueues = outQueues;
+		this.qMgr = qMgr;
 		
 		next = new JButton("next");
 		next.addActionListener(this);
@@ -37,7 +37,8 @@ public class Gui extends JFrame implements ActionListener {
 		setMinimumSize(new Dimension(350, 150));
 		status = new JLabel(WAIT_FOR_NEXT);
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		addWindowListener(new GuiListener(inQueues, outQueues, qMgr));
 		getContentPane().setLayout(new FlowLayout());
 		add(status);
 		add(next);
@@ -46,8 +47,8 @@ public class Gui extends JFrame implements ActionListener {
 		setVisible(true);
 	}
 	
-	Gui(String name, Doable doable, List<BlockingQueue<Product>> inQueues, List<BlockingQueue<Product>> outQueues, int tasktype) {
-		this(name, doable, inQueues, outQueues);
+	Gui(String name, Doable doable, List<MQQueue> inQueues, List<MQQueue> outQueues, int poscounter, MQQueueManager qMgr, int tasktype) {
+		this(name, doable, inQueues, outQueues, poscounter, qMgr);
 		this.tasktype = tasktype;
 	}
 
@@ -58,8 +59,9 @@ public class Gui extends JFrame implements ActionListener {
 			if (tasktype == 1) {
 				new Task_isConsistent(doable, inQueues, outQueues, status).execute();
 			}
-			else
+			else {
 				new Task(doable, inQueues, outQueues, status).execute();
+			}
 		}
 	}
 }

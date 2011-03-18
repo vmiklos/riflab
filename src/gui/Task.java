@@ -1,9 +1,10 @@
 package gui;
 
+import com.ibm.mq.*;
+
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.JLabel;
 import javax.swing.SwingWorker;
@@ -16,11 +17,11 @@ public class Task extends SwingWorker<Void, Void> {
 
 	protected String dtoStatus = "";
 	protected Doable doable;
-	protected List<BlockingQueue<Product>> inQueues;
-	protected List<BlockingQueue<Product>> outQueues;
+	protected List<MQQueue> inQueues;
+	protected List<MQQueue> outQueues;
 	JLabel status;
 
-	public Task(Doable doable, List<BlockingQueue<Product>> inQueues, List<BlockingQueue<Product>> outQueues, JLabel status) {
+	public Task(Doable doable, List<MQQueue> inQueues, List<MQQueue> outQueues, JLabel status) {
 		this.doable = doable;
 		this.inQueues = inQueues;
 		this.outQueues = outQueues;
@@ -44,9 +45,9 @@ public class Task extends SwingWorker<Void, Void> {
 	}
 
 	protected void getFromIntput(List<Product> ins) throws Exception {
-		for(BlockingQueue<Product> q : inQueues) {
+		for(MQQueue q : inQueues) {
 			try {
-				Product p = q.poll(20L, TimeUnit.SECONDS);
+				Product p = poll(q, 60);
 				if (p == null) {
 					dtoStatus = "Read timeout!<br>" + Gui.WAIT_FOR_NEXT;
 					publish();
@@ -80,13 +81,54 @@ public class Task extends SwingWorker<Void, Void> {
 	}
 
 	protected void copyToOutput(Product res) {
-		for (BlockingQueue<Product> q : outQueues) {
-			q.add(res);
+		for (MQQueue q : outQueues) {
+			put(q, res);
 		}
 		dtoStatus = dtoStatus + "<br>" + Gui.WAIT_FOR_NEXT;
 		publish();
 	}
 
+	@SuppressWarnings("deprecation")
+	protected Product poll(MQQueue q, int timeout) {
+		MQMessage retrievedMessage = new MQMessage();
+		
+		MQGetMessageOptions gmo = new MQGetMessageOptions();
+		gmo.options |= MQC.MQGMO_WAIT;
+		gmo.waitInterval = timeout*1000;
+		Product product = null;
+		try {
+			q.get(retrievedMessage, gmo);
+			product = (Product) retrievedMessage.readObject();
+		} catch (MQException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return product;
+	}
+	
+	protected void put(MQQueue q, Product p) {
+		MQMessage m = new MQMessage();
+		try {
+			m.writeObject(p);
+			MQPutMessageOptions pmo = new MQPutMessageOptions(); 
+			q.put(m,pmo);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		catch (MQException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
 	protected void process(List<Void> chunks) {
 		status.setText("<html>" + dtoStatus + "</html>");

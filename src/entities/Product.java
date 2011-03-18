@@ -1,9 +1,12 @@
 package entities;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Product {
+public class Product implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	private int id;
 	private boolean verified;
 	private boolean valid;
@@ -25,7 +28,7 @@ public class Product {
 	public String toString() {
 		return "Product #" + id + " (r"+srs.getRequirements().size()+
 			", cons"+(srs.isConsistent() ? 1 : 0) +
-			", a"+architecture.size()+
+			", a"+getArchitecture().size()+
 			", code" + sourceFiles.size() +
 			", t" + testSuite.size() +
 			", d" + documentation.size() +
@@ -74,5 +77,13 @@ public class Product {
 	}
 	public void setSrs(SRS srs) {
 		this.srs = srs;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }

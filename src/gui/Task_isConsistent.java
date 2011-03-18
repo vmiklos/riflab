@@ -1,7 +1,7 @@
 package gui;
 
+import com.ibm.mq.*;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -15,8 +15,8 @@ public class Task_isConsistent extends Task {
 	boolean isConsistent;
 	
 	public Task_isConsistent(Doable doable,
-			List<BlockingQueue<Product>> inQueues,
-			List<BlockingQueue<Product>> outQueues, JLabel status) {
+			List<MQQueue> inQueues,
+			List<MQQueue> outQueues, JLabel status) {
 		super(doable, inQueues, outQueues, status);
 	}
 	
@@ -29,10 +29,10 @@ public class Task_isConsistent extends Task {
 	@Override
 	protected void copyToOutput(Product res) {
 		if (isConsistent) {
-			outQueues.get(0).add(res);
+			put(outQueues.get(0), res);
 		}
 		else {
-			outQueues.get(1).add(res);
+			put(outQueues.get(1), res);
 		}
 		dtoStatus = dtoStatus + "<br>" + Gui.WAIT_FOR_NEXT;
 		publish();
