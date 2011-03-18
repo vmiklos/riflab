@@ -53,8 +53,7 @@ public class Controller {
 			try {
 				qMgr = new MQQueueManager("QM_winxp_vm");
 			} catch (MQException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				return null;
 			}
 		}
 		int openOptions = MQC.MQOO_INPUT_AS_Q_DEF |	MQC.MQOO_OUTPUT ;
@@ -62,8 +61,7 @@ public class Controller {
 		try {
 			result = qMgr.accessQueue("meres." + name, openOptions);
 		} catch (MQException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return null;
 		}
 		return result;
 	}

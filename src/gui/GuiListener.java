@@ -30,16 +30,9 @@ public class GuiListener extends WindowAdapter{
 				q.close();
 			}
 			qMgr.close();
-			System.out.println("Closing...");
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		} catch (MQException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("I can not close the queue.");
+			return;
 		}
 	}
 }

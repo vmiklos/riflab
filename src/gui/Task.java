@@ -110,20 +110,19 @@ public class Task extends SwingWorker<Void, Void> {
 		return product;
 	}
 	
-	protected void put(MQQueue q, Product p) {
+	protected boolean put(MQQueue q, Product p) {
 		MQMessage m = new MQMessage();
 		try {
 			m.writeObject(p);
 			MQPutMessageOptions pmo = new MQPutMessageOptions(); 
 			q.put(m,pmo);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return false;
 		} 
 		catch (MQException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return false;
 		}
+		return true;
 	}
 	
 	@Override
