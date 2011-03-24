@@ -1,10 +1,6 @@
 package entities;
 
-import java.io.Serializable;
-
-public class File implements Serializable {
-	private static final long serialVersionUID = 1L;
-	
+public class File {
 	private String name;
 	private String content;
 	private Integer quality;
