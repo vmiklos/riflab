@@ -1,12 +1,9 @@
 package entities;
 
-import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Product implements Serializable {
-	private static final long serialVersionUID = 1L;
-	
+public class Product {
 	private int id;
 	private boolean verified;
 	private boolean valid;
