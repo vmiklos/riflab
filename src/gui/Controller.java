@@ -74,11 +74,9 @@ public class Controller {
 
 			result = (Queue) guiContext.getCtx().lookup("queue/" + name);
 		} catch (JMSException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return null;
 		} catch (NamingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return null;
 		}
 
 		return result;

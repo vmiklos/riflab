@@ -100,8 +100,7 @@ public class Task extends SwingWorker<Void, Void> {
 			ObjectMessage retrievedMessage = (ObjectMessage) queueReceiver.receive(timeout * 1000);
 			product = (Product) retrievedMessage.getObject();
 		} catch (JMSException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return null;
 		}
 
 		return product;
@@ -113,8 +112,6 @@ public class Task extends SwingWorker<Void, Void> {
 			ObjectMessage m = guiContext.getQueueSession().createObjectMessage(p);
 			queueSender.send(m);
 		} catch (JMSException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 			return false;
 		}
 

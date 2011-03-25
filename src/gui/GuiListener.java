@@ -18,8 +18,7 @@ public class GuiListener extends WindowAdapter{
 		try {
 			guiContext.getQueueConnection().close();
 		} catch (JMSException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return;
 		}
 	}
 }
