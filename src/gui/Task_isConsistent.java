@@ -1,7 +1,8 @@
 package gui;
 
-import com.ibm.mq.*;
 import java.util.List;
+
+import javax.jms.Queue;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -15,15 +16,18 @@ public class Task_isConsistent extends Task {
 	boolean isConsistent;
 	
 	public Task_isConsistent(Doable doable,
-			List<MQQueue> inQueues,
-			List<MQQueue> outQueues, JLabel status) {
-		super(doable, inQueues, outQueues, status);
+			List<Queue> inQueues,
+			List<Queue> outQueues, JLabel status, GuiContext guiContext) {
+		super(doable, inQueues, outQueues, status, guiContext);
 	}
 	
 	@Override
 	protected Product processData(List<Product> ins) throws Exception {
 		isConsistent = ask();
-		return ins.get(0);
+		Product product;
+		product = ins.get(0);
+		// product.setVerified(true);
+		return product;
 	}
 
 	@Override

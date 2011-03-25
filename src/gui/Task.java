@@ -1,11 +1,13 @@
 package gui;
 
-import com.ibm.mq.*;
-
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.jms.JMSException;
+import javax.jms.ObjectMessage;
+import javax.jms.Queue;
+import javax.jms.QueueReceiver;
+import javax.jms.QueueSender;
 import javax.swing.JLabel;
 import javax.swing.SwingWorker;
 
@@ -17,17 +19,19 @@ public class Task extends SwingWorker<Void, Void> {
 
 	protected String dtoStatus = "";
 	protected Doable doable;
-	protected List<MQQueue> inQueues;
-	protected List<MQQueue> outQueues;
+	protected GuiContext guiContext;
+	protected List<Queue> inQueues;
+	protected List<Queue> outQueues;
 	JLabel status;
 
-	public Task(Doable doable, List<MQQueue> inQueues, List<MQQueue> outQueues, JLabel status) {
+	public Task(Doable doable, List<Queue> inQueues, List<Queue> outQueues, JLabel status, GuiContext guiContext) {
 		this.doable = doable;
 		this.inQueues = inQueues;
 		this.outQueues = outQueues;
 		this.status = status;
+		this.guiContext = guiContext;
 	}
-	
+
 	@Override
 	protected Void doInBackground() {
 		List<Product> ins = new LinkedList<Product>();
@@ -45,7 +49,7 @@ public class Task extends SwingWorker<Void, Void> {
 	}
 
 	protected void getFromIntput(List<Product> ins) throws Exception {
-		for(MQQueue q : inQueues) {
+		for(Queue q : inQueues) {
 			try {
 				Product p = poll(q, 60);
 				if (p == null) {
@@ -81,50 +85,42 @@ public class Task extends SwingWorker<Void, Void> {
 	}
 
 	protected void copyToOutput(Product res) {
-		for (MQQueue q : outQueues) {
+		for (Queue q : outQueues) {
 			put(q, res);
 		}
 		dtoStatus = dtoStatus + "<br>" + Gui.WAIT_FOR_NEXT;
 		publish();
 	}
 
-	@SuppressWarnings("deprecation")
-	protected Product poll(MQQueue q, int timeout) {
-		MQMessage retrievedMessage = new MQMessage();
-		
-		MQGetMessageOptions gmo = new MQGetMessageOptions();
-		gmo.options |= MQC.MQGMO_WAIT;
-		gmo.waitInterval = timeout*1000;
+	protected Product poll(Queue q, int timeout) {
 		Product product = null;
+
 		try {
-			q.get(retrievedMessage, gmo);
-			product = (Product) retrievedMessage.readObject();
-		} catch (MQException e) {
-			return null;
-		} catch (IOException e) {
-			return null;
-		} catch (ClassNotFoundException e) {
-			return null;
+			QueueReceiver queueReceiver = guiContext.getQueueSession().createReceiver(q);
+			ObjectMessage retrievedMessage = (ObjectMessage) queueReceiver.receive(timeout * 1000);
+			product = (Product) retrievedMessage.getObject();
+		} catch (JMSException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
+
 		return product;
 	}
-	
-	protected boolean put(MQQueue q, Product p) {
-		MQMessage m = new MQMessage();
+
+	protected boolean put(Queue q, Product p) {
 		try {
-			m.writeObject(p);
-			MQPutMessageOptions pmo = new MQPutMessageOptions(); 
-			q.put(m,pmo);
-		} catch (IOException e) {
-			return false;
-		} 
-		catch (MQException e) {
+			QueueSender queueSender = guiContext.getQueueSession().createSender(q);
+			ObjectMessage m = guiContext.getQueueSession().createObjectMessage(p);
+			queueSender.send(m);
+		} catch (JMSException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 			return false;
 		}
+
 		return true;
 	}
-	
+
 	@Override
 	protected void process(List<Void> chunks) {
 		status.setText("<html>" + dtoStatus + "</html>");

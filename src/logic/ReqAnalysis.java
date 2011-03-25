@@ -14,6 +14,7 @@ public class ReqAnalysis implements Doable {
 		requirements.add("masodik kovetelmeny");
 		Product product = new Product(id++);
 		product.getSrs().setRequirements(requirements);
+		
 		return product;
 	}
 	

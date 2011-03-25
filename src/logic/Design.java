@@ -14,6 +14,7 @@ public class Design implements Doable {
 		architecture.add("view");
 		architecture.add("controller");
 		product.setArchitecture(architecture);
+
 		return product;
 	}
 }

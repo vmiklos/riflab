@@ -6,7 +6,6 @@ import java.util.List;
 
 public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
 	private int id;
 	private boolean verified;
 	private boolean valid;
@@ -15,6 +14,10 @@ public class Product implements Serializable {
 	private List<File> documentation;
 	private List<String> architecture;
 	private SRS srs;
+	
+	public Product() {
+		this(0);
+	}
 	
 	public Product(int id) {
 		sourceFiles = new LinkedList<File>();
