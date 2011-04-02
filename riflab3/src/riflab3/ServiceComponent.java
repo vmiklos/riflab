@@ -35,7 +35,7 @@ public class ServiceComponent implements CommandProvider {
 	private ValidationService validationService;
 	private VerificationService verificationService;
 	
-	private LogService log;
+	private LogService logService;
 
 	private Map<Integer, Workflow> workflows; 
 
@@ -101,7 +101,7 @@ public class ServiceComponent implements CommandProvider {
 			ci.println("after Testing: " + p3);
 
 			p4 = docService.doDocCreation(asList(p1));
-			ci.println("after Development: " + p4);
+			ci.println("after Doc: " + p4);
 
 			p1 = integrationService.doIntegration(asList(p2, p3, p4));
 			ci.println("after Integration: " + p1);
@@ -164,6 +164,8 @@ public class ServiceComponent implements CommandProvider {
 						ci.println("Workflow does not exist.");
 					}
 				} else if (arg.equalsIgnoreCase("ls")) {
+					logService.log(LogService.LOG_DEBUG, "HELLOO!!!!!");
+					
 					for(Integer id : workflows.keySet()) {
 						System.out.println("Id: " + id + ";");
 					}
@@ -347,11 +349,11 @@ public class ServiceComponent implements CommandProvider {
 	}
 	
 	protected void bindLog(LogService log) {
-	    this.log = log;
+	    this.logService = log;
 	}
 
 	protected void unbindLog(LogService log) {
-	    this.log = null;
+	    this.logService = null;
 	}
 
 }

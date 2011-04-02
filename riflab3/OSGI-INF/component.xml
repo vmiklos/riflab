@@ -13,5 +13,5 @@
    <reference bind="setValidation" cardinality="0..1" interface="riflab3.logic2.services.ValidationService" name="ValidationService" policy="static" unbind="unsetValidation"/>
    <reference bind="setVerification" cardinality="0..1" interface="riflab3.logic2.services.VerificationService" name="VerificationService" policy="static" unbind="unsetVerification"/>
 
-   <!-- reference name="log" interface="org.osgi.service.log.LogService" cardinality="1..1" policy="static" bind="bindLog" unbind="unbindLog" / -->
+   <reference name="log" interface="org.osgi.service.log.LogService" cardinality="1..1" policy="static" bind="bindLog" unbind="unbindLog" />
 </scr:component>
