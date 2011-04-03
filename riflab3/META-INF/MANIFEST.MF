@@ -11,6 +11,5 @@ Import-Package: org.eclipse.osgi.framework.console,
  org.osgi.framework;version="1.3.0",
  org.osgi.service.log,
  riflab3.entities,
- riflab3.interfaces,
- riflab3.logic2,
+ riflab3.logic1.services,
  riflab3.logic2.services

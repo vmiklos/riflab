@@ -4,14 +4,15 @@
    <service>
       <provide interface="org.eclipse.osgi.framework.console.CommandProvider"/>
    </service>
-   <reference bind="setDesign" cardinality="0..1" interface="riflab3.logic2.services.DesignService" name="DesignService" policy="static" unbind="unsetDesign"/>
-   <reference bind="setDevelop" cardinality="0..1" interface="riflab3.logic2.services.DevelopService" name="DevelopService" policy="static" unbind="unsetDevelop"/>
-   <reference bind="setDoc" cardinality="0..1" interface="riflab3.logic2.services.DocService" name="DocService" policy="static" unbind="unsetDoc"/>
-   <reference bind="setIntegration" cardinality="0..1" interface="riflab3.logic2.services.IntegrationService" name="IntegrationService" policy="static" unbind="unsetIntegration"/>
-   <reference bind="setReqRefine" cardinality="0..1" interface="riflab3.logic2.services.ReqRefineService" name="ReqRefineService" policy="static" unbind="unsetReqRefine"/>
-   <reference bind="setTest" cardinality="0..1" interface="riflab3.logic2.services.TestService" name="TestService" policy="static" unbind="unsetTest"/>
-   <reference bind="setValidation" cardinality="0..1" interface="riflab3.logic2.services.ValidationService" name="ValidationService" policy="static" unbind="unsetValidation"/>
-   <reference bind="setVerification" cardinality="0..1" interface="riflab3.logic2.services.VerificationService" name="VerificationService" policy="static" unbind="unsetVerification"/>
-
-   <reference name="log" interface="org.osgi.service.log.LogService" cardinality="1..1" policy="static" bind="bindLog" unbind="unbindLog" />
+   <reference bind="setDesign" cardinality="0..1" interface="riflab3.logic2.services.DesignService" name="DesignService" policy="dynamic" unbind="unsetDesign"/>
+   <reference bind="setDevelop" cardinality="0..1" interface="riflab3.logic2.services.DevelopService" name="DevelopService" policy="dynamic" unbind="unsetDevelop"/>
+   <reference bind="setDoc" cardinality="0..1" interface="riflab3.logic2.services.DocService" name="DocService" policy="dynamic" unbind="unsetDoc"/>
+   <reference bind="setIntegration" cardinality="0..1" interface="riflab3.logic2.services.IntegrationService" name="IntegrationService" policy="dynamic" unbind="unsetIntegration"/>
+   <reference bind="setReqRefine" cardinality="0..1" interface="riflab3.logic2.services.ReqRefineService" name="ReqRefineService" policy="dynamic" unbind="unsetReqRefine"/>
+   <reference bind="setTest" cardinality="0..1" interface="riflab3.logic2.services.TestService" name="TestService" policy="dynamic" unbind="unsetTest"/>
+   <reference bind="setValidation" cardinality="0..1" interface="riflab3.logic2.services.ValidationService" name="ValidationService" policy="dynamic" unbind="unsetValidation"/>
+   <reference bind="setVerification" cardinality="0..1" interface="riflab3.logic2.services.VerificationService" name="VerificationService" policy="dynamic" unbind="unsetVerification"/>
+   <reference name="log" interface="org.osgi.service.log.LogService" cardinality="1..1" policy="dynamic" bind="bindLog" unbind="unbindLog" />
+   <reference bind="setReqAnalysis" cardinality="0..1" interface="riflab3.logic1.services.ReqAnalysisService" name="ReqAnalysisService" policy="dynamic" unbind="unsetReqAnalysis"/>
+   <reference bind="setReqChecking" cardinality="0..1" interface="riflab3.logic1.services.ReqCheckingService" name="ReqCheckingService" policy="dynamic" unbind="unsetReqChecking"/>
 </scr:component>

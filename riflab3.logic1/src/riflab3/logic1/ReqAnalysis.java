@@ -1,4 +1,4 @@
-package riflab3.logic;
+package riflab3.logic1;
 
 import java.util.LinkedList;
 import java.util.List;
