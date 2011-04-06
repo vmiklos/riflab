@@ -60,7 +60,7 @@ public class Activator implements BundleActivator
         try {
             context.addServiceListener(m_servlistener, filter);
         } catch (InvalidSyntaxException e) {
-            e.printStackTrace();
+            System.err.println("LogReaderService not found.");
         }
     }
 
