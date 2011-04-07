@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+<extension 
+	point="eu.sensoria_ist.casetool.core.tool">
+	<tool 
+		id="riflab3.logic1.services.ILogic1" 
+		name="Logic1 Tool" 
+		description="Logic1" 
+		class="riflab3.logic1.services.Logic1">
+		<category 
+			name="RIFLAB">
+		</category>
+		<function 
+			name="doReqAnalysis" 
+			returns="riflab3.entities.Product" 
+			returnsDescription="(no description)" 
+			description="ReqAnalysis">
+		</function>
+		<function 
+			name="doReqChecking" 
+			returns="riflab3.entities.Product" 
+			returnsDescription="(no description)" 
+			description="ReqChecking">
+			<parameter 
+				name="product" 
+				description="Input Product List" 
+				type="riflab3.entities.Product">
+			</parameter>
+		</function>
+	</tool>
+</extension>
+
+</plugin>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+<extension 
+	point="eu.sensoria_ist.casetool.core.tool">
+	<tool 
+		id="riflab3.logic2.services.ILogic2" 
+		name="Logic2 Tool" 
+		description="Logic2" 
+		class="riflab3.logic2.services.Logic2">
+		<category 
+			name="RIFLAB">
+		</category>
+		<function 
+			name="doDesign" 
+			returns="riflab3.entities.Product" 
+			returnsDescription="(no description)" 
+			description="Design">
+			<parameter 
+				name="product" 
+				description="Input Product List" 
+				type="riflab3.entities.Product">
+			</parameter>
+		</function>
+		<function 
+			name="doDevelop" 
+			returns="riflab3.entities.Product" 
+			returnsDescription="(no description)" 
+			description="Develop">
+			<parameter 
+				name="product" 
+				description="Input Product List" 
+				type="riflab3.entities.Product">
+			</parameter>
+		</function>
+		<function 
+			name="doDoc" 
+			returns="riflab3.entities.Product" 
+			returnsDescription="(no description)" 
+			description="Doc">
+			<parameter 
+				name="product" 
+				description="Input Product List" 
+				type="riflab3.entities.Product">
+			</parameter>
+		</function>
+		<function 
+			name="doIntegration" 
+			returns="riflab3.entities.Product" 
+			returnsDescription="(no description)" 
+			description="Integration">
+			<parameter 
+				name="productDevelopment" 
+				description="Input Product List" 
+				type="riflab3.entities.Product">
+			</parameter>
+			<parameter 
+				name="productTesting" 
+				description="productTesting" 
+				type="riflab3.entities.Product">
+			</parameter>
+			<parameter 
+				name="productDoc" 
+				description="productDoc" 
+				type="riflab3.entities.Product">
+			</parameter>
+		</function>
+		<function 
+			name="doReqRefine" 
+			returns="riflab3.entities.Product" 
+			returnsDescription="(no description)" 
+			description="ReqRefine">
+			<parameter 
+				name="product" 
+				description="Input Product List" 
+				type="riflab3.entities.Product">
+			</parameter>
+		</function>
+		<function 
+			name="doTest" 
+			returns="riflab3.entities.Product" 
+			returnsDescription="(no description)" 
+			description="Test">
+			<parameter 
+				name="product" 
+				description="Input Product List" 
+				type="riflab3.entities.Product">
+			</parameter>
+		</function>
+	</tool>
+</extension>
+
+<extension 
+	point="eu.sensoria_ist.casetool.core.tool">
+	<tool 
+		id="riflab3.logic2.services.ILogic3" 
+		name="Logic3 Tool" 
+		description="Logic3" 
+		class="riflab3.logic2.services.Logic3">
+		<category 
+			name="RIFLAB">
+		</category>
+		<function 
+			name="doValidation" 
+			returns="riflab3.entities.Product" 
+			returnsDescription="(no description)" 
+			description="Validation">
+			<parameter 
+				name="product" 
+				description="Input Product List" 
+				type="riflab3.entities.Product">
+			</parameter>
+		</function>
+		<function 
+			name="doVerification" 
+			returns="riflab3.entities.Product" 
+			returnsDescription="(no description)" 
+			description="Verification">
+			<parameter 
+				name="product" 
+				description="Input Product List" 
+				type="riflab3.entities.Product">
+			</parameter>
+		</function>
+	</tool>
+</extension>
+
+
+</plugin>

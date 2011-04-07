@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Logic1
-Bundle-SymbolicName: riflab3.logic1
+Bundle-SymbolicName: riflab3.logic1;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: riflab3.logic1.Activator
 Bundle-ActivationPolicy: lazy
@@ -9,5 +9,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.osgi.framework;version="1.3.0",
  riflab3.entities,
  riflab3.interfaces
-Export-Package: riflab3.logic1.services
 Service-Component: OSGI-INF/*.xml
+Require-Bundle: eu.sensoria_ist.casetool.core;bundle-version="4.3.0"

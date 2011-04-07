@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<processmodel:Process xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:processmodel="http://processmodel/1.0" name="New_Process" id="New_Process_1302183322827">
+  <processNodes xsi:type="processmodel:StartNode" id="id_1302183340124" outgoing="//@processEdges.16"/>
+  <processNodes xsi:type="processmodel:ProcessEndNode" id="id_1302183463843" incoming="//@processEdges.14"/>
+  <processNodes xsi:type="processmodel:DecisionNode" name="" id="_1302183534155" outgoing="//@processEdges.0 //@processEdges.3" incoming="//@processEdges.2" language="javascript" body="if (decisionInput.getSrs().isConsistent())&#xD;&#xA;  decisionOutput = &quot;consistentTrue&quot;;&#xD;&#xA;else&#xD;&#xA;  decisionOutput = &quot;consistentFalse&quot;;&#xD;&#xA;"/>
+  <processNodes xsi:type="processmodel:MergeNode" id="id_1302183538593" outgoing="//@processEdges.5" incoming="//@processEdges.0 //@processEdges.4"/>
+  <processNodes xsi:type="processmodel:ForkNode" id="id_1302183867390" outgoing="//@processEdges.7 //@processEdges.8 //@processEdges.9" incoming="//@processEdges.6"/>
+  <processNodes xsi:type="processmodel:ServiceNode" name="doIntegration" id="doIntegration_1302188585093" serviceID="doIntegration" toolID="r-osgi://127.0.0.1:9278#riflab3.logic2.services.ILogic2">
+    <inputPins name="productDevelopment" id="productDevelopment_1302188585140" incoming="//@processEdges.10" type="Product" parameter="riflab3.entities.Product productDevelopment"/>
+    <inputPins name="productTesting" id="productTesting_1302188585155" incoming="//@processEdges.11" type="Product" parameter="riflab3.entities.Product productTesting"/>
+    <inputPins name="productDoc" id="productDoc_1302188585187" incoming="//@processEdges.12" type="Product" parameter="riflab3.entities.Product productDoc"/>
+    <outputPins name="Product" id="Product_1302188585202" outgoing="//@processEdges.15" type="Product" parameter="Product"/>
+  </processNodes>
+  <processNodes xsi:type="processmodel:ServiceNode" name="doReqAnalysis" id="doReqAnalysis_1302189830015" incoming="//@processEdges.16" serviceID="doReqAnalysis" toolID="local#riflab3.logic1.services.ILogic1">
+    <outputPins name="product" id="product_1302189830030" outgoing="//@processEdges.1" type="Product" parameter="Product"/>
+  </processNodes>
+  <processNodes xsi:type="processmodel:ServiceNode" name="doReqChecking" id="doReqChecking_1302189835030" serviceID="doReqChecking" toolID="local#riflab3.logic1.services.ILogic1">
+    <inputPins name="product" id="product_1302189835046" incoming="//@processEdges.1" type="Product" parameter="riflab3.entities.Product product"/>
+    <outputPins name="product" id="product_1302189835062" outgoing="//@processEdges.2" type="Product" parameter="Product"/>
+  </processNodes>
+  <processNodes xsi:type="processmodel:ServiceNode" name="doReqRefine" id="doReqRefine_1302189840968" serviceID="doReqRefine" toolID="r-osgi://127.0.0.1:9278#riflab3.logic2.services.ILogic2">
+    <inputPins name="product" id="product_1302189840983" incoming="//@processEdges.3" type="Product" parameter="riflab3.entities.Product product"/>
+    <outputPins name="Product" id="Product_1302189840999" outgoing="//@processEdges.4" type="Product" parameter="Product"/>
+  </processNodes>
+  <processNodes xsi:type="processmodel:ServiceNode" name="doDesign" id="doDesign_1302189861374" serviceID="doDesign" toolID="r-osgi://127.0.0.1:9278#riflab3.logic2.services.ILogic2">
+    <inputPins name="product" id="product_1302189861405" incoming="//@processEdges.5" type="Product" parameter="riflab3.entities.Product product"/>
+    <outputPins name="Product" id="Product_1302189861405" outgoing="//@processEdges.6" type="Product" parameter="Product"/>
+  </processNodes>
+  <processNodes xsi:type="processmodel:ServiceNode" name="doDevelop" id="doDevelop_1302189866390" serviceID="doDevelop" toolID="r-osgi://127.0.0.1:9278#riflab3.logic2.services.ILogic2">
+    <inputPins name="product" id="product_1302189866405" incoming="//@processEdges.7" type="Product" parameter="riflab3.entities.Product product"/>
+    <outputPins name="Product" id="Product_1302189866405" outgoing="//@processEdges.10" type="Product" parameter="Product"/>
+  </processNodes>
+  <processNodes xsi:type="processmodel:ServiceNode" name="doTest" id="doTest_1302189868702" serviceID="doTest" toolID="r-osgi://127.0.0.1:9278#riflab3.logic2.services.ILogic2">
+    <inputPins name="product" id="product_1302189868733" incoming="//@processEdges.8" type="Product" parameter="riflab3.entities.Product product"/>
+    <outputPins name="Product" id="Product_1302189868749" outgoing="//@processEdges.11" type="Product" parameter="Product"/>
+  </processNodes>
+  <processNodes xsi:type="processmodel:ServiceNode" name="doDoc" id="doDoc_1302189871812" serviceID="doDoc" toolID="r-osgi://127.0.0.1:9278#riflab3.logic2.services.ILogic2">
+    <inputPins name="product" id="product_1302189871827" incoming="//@processEdges.9" type="Product" parameter="riflab3.entities.Product product"/>
+    <outputPins name="Product" id="Product_1302189871843" outgoing="//@processEdges.12" type="Product" parameter="Product"/>
+  </processNodes>
+  <processNodes xsi:type="processmodel:ServiceNode" name="doVerification" id="doVerification_1302189924515" serviceID="doVerification" toolID="r-osgi://127.0.0.1:9278#riflab3.logic2.services.ILogic3">
+    <inputPins name="product" id="product_1302189924530" incoming="//@processEdges.15" type="Product" parameter="riflab3.entities.Product product"/>
+    <outputPins name="Product" id="Product_1302189924546" outgoing="//@processEdges.13" type="Product" parameter="Product"/>
+  </processNodes>
+  <processNodes xsi:type="processmodel:ServiceNode" name="doValidation" id="doValidation_1302189926030" serviceID="doValidation" toolID="r-osgi://127.0.0.1:9278#riflab3.logic2.services.ILogic3">
+    <inputPins name="product" id="product_1302189926046" incoming="//@processEdges.13" type="Product" parameter="riflab3.entities.Product product"/>
+    <outputPins name="Product" id="Product_1302189926062" outgoing="//@processEdges.14" type="Product" parameter="Product"/>
+  </processNodes>
+  <processEdges xsi:type="processmodel:ObjectFlow" name="consistentTrue" id="consistentTrue_1302183560030" source="//@processNodes.2" target="//@processNodes.3"/>
+  <processEdges xsi:type="processmodel:ObjectFlow" id="id_1302189846812" source="//@processNodes.6/@outputPins.0" target="//@processNodes.7/@inputPins.0"/>
+  <processEdges xsi:type="processmodel:ObjectFlow" id="id_1302189850218" source="//@processNodes.7/@outputPins.0" target="//@processNodes.2"/>
+  <processEdges xsi:type="processmodel:ObjectFlow" name="consistentFalse" id="consistentFalse_1302189854171" source="//@processNodes.2" target="//@processNodes.8/@inputPins.0"/>
+  <processEdges xsi:type="processmodel:ObjectFlow" name="" id="_1302189858390" source="//@processNodes.8/@outputPins.0" target="//@processNodes.3"/>
+  <processEdges xsi:type="processmodel:ObjectFlow" id="id_1302189876765" source="//@processNodes.3" target="//@processNodes.9/@inputPins.0"/>
+  <processEdges xsi:type="processmodel:ObjectFlow" id="id_1302189880108" source="//@processNodes.9/@outputPins.0" target="//@processNodes.4"/>
+  <processEdges xsi:type="processmodel:ObjectFlow" id="id_1302189883124" source="//@processNodes.4" target="//@processNodes.10/@inputPins.0"/>
+  <processEdges xsi:type="processmodel:ObjectFlow" id="id_1302189886483" source="//@processNodes.4" target="//@processNodes.11/@inputPins.0"/>
+  <processEdges xsi:type="processmodel:ObjectFlow" id="id_1302189893437" source="//@processNodes.4" target="//@processNodes.12/@inputPins.0"/>
+  <processEdges xsi:type="processmodel:ObjectFlow" id="id_1302189897843" source="//@processNodes.10/@outputPins.0" target="//@processNodes.5/@inputPins.0"/>
+  <processEdges xsi:type="processmodel:ObjectFlow" id="id_1302189900968" source="//@processNodes.11/@outputPins.0" target="//@processNodes.5/@inputPins.1"/>
+  <processEdges xsi:type="processmodel:ObjectFlow" id="id_1302189904921" source="//@processNodes.12/@outputPins.0" target="//@processNodes.5/@inputPins.2"/>
+  <processEdges xsi:type="processmodel:ObjectFlow" id="id_1302189929640" source="//@processNodes.13/@outputPins.0" target="//@processNodes.14/@inputPins.0"/>
+  <processEdges xsi:type="processmodel:ObjectFlow" id="id_1302189932999" source="//@processNodes.14/@outputPins.0" target="//@processNodes.1"/>
+  <processEdges xsi:type="processmodel:ObjectFlow" id="id_1302189936874" source="//@processNodes.5/@outputPins.0" target="//@processNodes.13/@inputPins.0"/>
+  <processEdges xsi:type="processmodel:ControlFlow" id="id_1302189966015" source="//@processNodes.0" target="//@processNodes.6"/>
+</processmodel:Process>
