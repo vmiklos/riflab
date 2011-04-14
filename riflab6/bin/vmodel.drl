@@ -1,0 +1,144 @@
+package riflab6
+
+import entities.File;
+import entities.Product;
+import entities.SRS;
+import entities.TriState;
+
+import java.util.LinkedList;
+import java.util.List;
+
+rule "ReqAnalysis"
+	when
+		$p : Product( srs.requirements.size == 0 )
+	then
+		List<String> requirements = new LinkedList<String>();
+		requirements.add("elso kovetelmeny");
+		requirements.add("masodik kovetelmeny");
+		modify ( $p ) {
+			getSrs().setRequirements(requirements)
+		} 
+		System.out.println("ReqAnalysis: " + $p);
+end
+
+rule "ReqChecking"
+	when
+		$p : Product ( srs.requirements.size > 0 && srs.consistent == TriState.UNINIT )
+	then
+		TriState isConsistent;
+		if ($p.getSrs().isFailed()) {
+			isConsistent = TriState.FALSE;
+		} else {
+			isConsistent = TriState.TRUE;
+		}
+		modify ( $p ) {
+			getSrs().setConsistent(isConsistent)
+		}
+		System.out.println("ReqChecking: " + $p);
+end
+
+rule "ReqRefine"
+	when
+		$p : Product ( srs.consistent == TriState.FALSE )
+	then
+		modify ( $p ) {
+			getSrs().setConsistent(TriState.TRUE)
+		}
+		System.out.println("ReqRefine: " + $p);
+end
+
+rule "Design"
+	when
+		$p : Product ( srs.consistent == TriState.TRUE && architecture.size == 0 )
+	then
+		List<String> architecture = new LinkedList<String>();
+		architecture.add("model");
+		architecture.add("view");
+		architecture.add("controller");
+		modify ( $p ) {
+			setArchitecture(architecture)
+		}
+		System.out.println("Design: " + $p);
+end
+
+rule "Development"
+	when
+		$p : Product ( architecture.size > 0 && sourceFiles.size == 0 )
+	then
+		List<File> sourceFiles = new LinkedList<File>();
+		File file = new File();
+		file.setContent("public static void main()");
+		file.setName("main.java");
+		file.setQuality(100);
+		sourceFiles.add(file);
+		modify ( $p ) {
+			setSourceFiles(sourceFiles)
+		}
+		System.out.println("Development: " + $p);
+end
+
+rule "Test"
+	when
+		$p : Product ( architecture.size > 0 && testSuite.size == 0 )
+	then
+		List<File> testSuite = new LinkedList<File>();
+		File file = new File();
+		file.setContent("public static void test()");
+		file.setName("test.java");
+		file.setQuality(100);
+		testSuite.add(file);
+		modify ( $p ) {
+			setTestSuite(testSuite)
+		}
+		System.out.println("Test: " + $p);
+end
+
+rule "DocCreation"
+	when
+		$p : Product ( architecture.size > 0 && documentation.size == 0 )
+	then
+		List<File> documentation = new LinkedList<File>();
+		File file = new File();
+		file.setContent("doc content");
+		file.setName("doc.txt");
+		file.setQuality(100);
+		documentation.add(file);
+		modify ( $p ) {
+			setDocumentation(documentation)
+		}
+		System.out.println("DocCreation: " + $p);
+end
+
+rule "Integration"
+	when
+		$develop : Product ( sourceFiles.size > 0, $id : id && integrated == false)
+		$test : Product ( testSuite.size > 0, id == $id && integrated == false )
+		$doc : Product ( documentation.size > 0, id == $id, integrated == false )
+	then
+		modify ( $develop ) {
+			setTestSuite($test.getTestSuite()),
+			setDocumentation($doc.getDocumentation()),
+			setIntegrated(true)
+		}
+		System.out.println("Integration: " + $develop);
+end
+
+rule "Verification"
+	when
+		$p : Product ( integrated == true && verified == false )
+	then
+		modify ( $p ) {
+			setVerified(true)
+		}
+		System.out.println("Verification: " + $p);
+end
+
+rule "Validation"
+	when
+		$p : Product ( verified == true && valid == false )
+	then
+		modify ( $p ) {
+			setValid(true)
+		}
+		System.out.println("Valiadtion: " + $p);
+end

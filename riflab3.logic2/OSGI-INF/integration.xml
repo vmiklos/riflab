@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="riflab integration">
-   <implementation class="riflab3.logic2.services.impl.IntegrationServiceImpl"/>
-   <service>
-      <provide interface="riflab3.logic2.services.IntegrationService"/>
-   </service>
-</scr:component>
