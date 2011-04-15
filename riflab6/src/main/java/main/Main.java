@@ -11,6 +11,7 @@ import org.drools.io.ResourceFactory;
 import org.drools.logger.KnowledgeRuntimeLogger;
 import org.drools.logger.KnowledgeRuntimeLoggerFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
+import org.drools.runtime.rule.FactHandle;
 
 import entities.Product;
 
@@ -21,12 +22,18 @@ public class Main {
 		KnowledgeBase kbase = readKnowledgeBase();
 		StatefulKnowledgeSession ksession = kbase.newStatefulKnowledgeSession();
 		KnowledgeRuntimeLogger logger = KnowledgeRuntimeLoggerFactory.newFileLogger(ksession, "riflab");
+		
 		// go !
 		Product product0 = new Product(0, true);
-		ksession.insert(product0);
+		FactHandle product0fh = ksession.insert(product0);
 		Product product1 = new Product(1, false);
-		ksession.insert(product1);
+		FactHandle product1fh = ksession.insert(product1);
+		
 		ksession.fireAllRules();
+		
+		ksession.retract(product0fh);
+		ksession.retract(product1fh);
+		
 		logger.close();
 	}
 
