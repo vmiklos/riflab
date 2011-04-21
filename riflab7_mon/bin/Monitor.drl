@@ -1,0 +1,15 @@
+package monitor;
+ 
+rule "High CPU usage"
+	when
+		$cpuInfo : CpuInfo( percent >= 80 )
+	then
+		System.out.println( "Hey, CPU percent is high: " + $cpuInfo.getPercent() ); 
+end
+
+rule "Low CPU usage"
+	when
+		$cpuInfo : CpuInfo( percent < 80 )
+	then
+		System.out.println( "Hey, CPU percent is low: " + $cpuInfo.getPercent() ); 
+end
