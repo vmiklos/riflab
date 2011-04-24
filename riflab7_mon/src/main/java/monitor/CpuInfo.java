@@ -45,7 +45,7 @@ public class CpuInfo {
 			tokens = tokens[1].split("\"");
 			value = Double.valueOf(tokens[1]);
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.err.println("Something error occured. Please check that cmd.exe and typeperf can run!");
 		}
 		
 		return value;

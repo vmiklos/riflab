@@ -3,10 +3,6 @@ package gui;
 import java.util.List;
 
 import javax.jms.Queue;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import logic.Doable;
 
 import entities.Product;

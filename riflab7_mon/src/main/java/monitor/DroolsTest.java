@@ -43,7 +43,7 @@ public class DroolsTest {
 			
 			// logger.close();
 		} catch (Throwable t) {
-			t.printStackTrace();
+			System.err.println("An error ocured with drools.");
 		}
 	}
 

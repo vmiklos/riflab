@@ -8,7 +8,6 @@ import javax.jms.ObjectMessage;
 import javax.jms.Queue;
 import javax.jms.QueueReceiver;
 import javax.jms.QueueSender;
-import javax.swing.JLabel;
 import javax.swing.SwingWorker;
 
 import logic.Doable;
@@ -40,7 +39,6 @@ public class Task extends SwingWorker<Void, Void> {
 			res = processData(ins);
 			copyToOutput(res);
 		} catch (Exception e1) {
-			e1.printStackTrace();
 			return null;
 		}
 

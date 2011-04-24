@@ -42,9 +42,11 @@ public class Gui {
 			try {
 				task.get();
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				System.err.println("Somehow running is interrupted. Exiting...");
+				break;
 			} catch (ExecutionException e) {
-				e.printStackTrace();
+				System.err.println("Somehow running is failed. Exiting...");
+				break;
 			}
 		}
 	}

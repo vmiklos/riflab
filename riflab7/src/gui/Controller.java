@@ -77,10 +77,8 @@ public class Controller {
 
 			result = (Queue) guiContext.getCtx().lookup("queue/" + name);
 		} catch (JMSException e) {
-			e.printStackTrace();
 			return null;
 		} catch (NamingException e) {
-			e.printStackTrace();
 			return null;
 		}
 
@@ -160,11 +158,5 @@ public class Controller {
 
 	public static void main(String[] args) {
 		new Controller(args[0], (args.length>=2 && args[1].equalsIgnoreCase("true")));
-		try {
-			Thread.sleep(60000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 }
